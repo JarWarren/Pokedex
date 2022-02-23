@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -21,15 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pokedexcompose.ui.theme.PokedexComposeTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.lang.Exception
 import java.lang.StringBuilder
 import java.net.URL
-import java.util.*
 
 class MainActivity : ComponentActivity() {
     private val viewModel = ViewModel()
@@ -93,7 +90,7 @@ class ViewModel {
         if (searchTerm.isEmpty()) {
             return
         }
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.IO).launch {
             val url = URL("https://pokeapi.co/api/v2/pokemon/" + searchTerm.lowercase())
             val connection = url.openConnection()
             try {
